@@ -19,19 +19,25 @@ namespace RPG.Control
         {
             if(Input.GetMouseButtonDown(0))
             {
-                //int position = 0;
-                //var positionList = new List<int>();
-                RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-                foreach(RaycastHit hit in hits)
-                {
-                    if (hit.transform.GetComponent<CombatTarget>() != null)
+                Physics.Raycast(GetMouseRay(), out RaycastHit hit);
+                if (hit.transform.GetComponent<CombatTarget>() != null)
                     {
-                        //positionList.Add(position);
                         CombatTarget target = hit.transform.GetComponent<CombatTarget>();
                         GetComponent<Fighter>().Attack(target);
                     }
-                    //position = position + 1;
-                }
+                //int position = 0;
+                //var positionList = new List<int>();
+                // RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+                // foreach(RaycastHit hit in hits)
+                // {
+                //     if (hit.transform.GetComponent<CombatTarget>() != null)
+                //     {
+                //         //positionList.Add(position);
+                //         CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                //         GetComponent<Fighter>().Attack(target);
+                //     }
+                //     //position = position + 1;
+                // }
                 //RaycastHit Closer = MeasureDistance(positionList, hits);
             }
         }
