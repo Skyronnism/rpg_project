@@ -11,20 +11,25 @@ namespace RPG.Control
 
         void Update()
         {
+            if(InteractWithCombat()) return;
             InteractWithMovement();
-            InteractWithCombat();
         }
 
-        private void InteractWithCombat()
+        private bool InteractWithCombat()
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                Physics.Raycast(GetMouseRay(), out RaycastHit hit);
-                if (hit.transform.GetComponent<CombatTarget>() != null)
+                bool hasTarget = Physics.Raycast(GetMouseRay(), out RaycastHit hit);
+                if(hasTarget == false) return false;
+                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                if (target != null)
                     {
-                        CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                        if(Input.GetMouseButtonDown(0)) 
+                        {
                         GetComponent<Fighter>().Attack(target);
+                        }
+                        return true;
                     }
+                else
+                    return false;
                 //int position = 0;
                 //var positionList = new List<int>();
                 // RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
@@ -39,7 +44,6 @@ namespace RPG.Control
                 //     //position = position + 1;
                 // }
                 //RaycastHit Closer = MeasureDistance(positionList, hits);
-            }
         }
 
         // private RaycastHit MeasureDistance(List<int> positionList, RaycastHit[] hits)
@@ -67,16 +71,25 @@ namespace RPG.Control
 
         private void InteractWithMovement()
         {
-            if (Input.GetMouseButton(0))
-                MoveToCursor();
+            if(MoveToCursor()) return;
+            print("nothing to do");
         }
 
-        public void MoveToCursor()
+        public bool MoveToCursor()
         {
             RaycastHit hit;
             bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
             if (hasHit)
-                GetComponent<Mover>().MoveTo(hit.point);
+            {
+                    if (Input.GetMouseButton(0))
+                    {
+                        GetComponent<Mover>().MoveTo(hit.point);
+                        return true;
+                    }
+                return true;
+            }
+            else
+            return false;
         }
 
         private static Ray GetMouseRay()
