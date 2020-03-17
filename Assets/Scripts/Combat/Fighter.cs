@@ -12,16 +12,21 @@ namespace RPG.Combat
         Transform target;
 
         private void Update()
-        {       
-            if(target != null)
+        {    
+            if(target == null) return;
+            if(!IsInRange())
             {
-                float distance = Vector3.Distance(GetComponent<NavMeshAgent>().transform.position, target.position);
                 GetComponent<Mover>().MoveTo(target.position);
-                if(distance <= weaponRange)
-                {
-                    GetComponent<Mover>().Stop();
-                }
-            }   
+            }
+            else
+            {
+                GetComponent<Mover>().Stop();
+            }
+        }
+
+        private bool IsInRange()
+        {
+            return Vector3.Distance(GetComponent<NavMeshAgent>().transform.position, target.position) <= weaponRange;
         }
 
         public void Attack(CombatTarget combatTarget)

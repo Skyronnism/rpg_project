@@ -19,7 +19,6 @@ namespace RPG.Movement
             UpdateAnimator();
         }
 
-
         public void MoveTo(Vector3 destination)
         {
             navMeshAgent.destination = destination;
